@@ -113,3 +113,7 @@ get "/video" do
   content_type :json
   video.nil? ? {} : { :query => video[:name], :url => video[:url] }.to_json
 end
+
+get "/player" do
+  File.read(File.join('', 'player.html'))
+end
