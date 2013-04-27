@@ -60,11 +60,15 @@ def url_from_results(results)
     url = url_from_result(r)
     return url unless url.nil?
   end
+  nil
 end
 
-#p video_query(Hashtag.last.name)
-p results = video_query("plants")
-p url_from_results(results)
+def latest_valid_url(hashtag)
+  results = video_query(hashtag)
+  url_from_results(results)
+end
+
+p latest_valid_url("blah")
 
 get '/' do
   form
@@ -77,6 +81,6 @@ end
 
 get '/video' do
   content_type :json
-  { :url => 'https://vine.co/v/bxhYjjTXW7v' }.to_json
+  { :query => "blah", :url => 'https://vine.co/v/bxhYjjTXW7v' }.to_json
 end
 
