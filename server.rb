@@ -14,7 +14,7 @@ class Hashtag
   property :submitted_at, DateTime
 end
 DataMapper.finalize
-DataMapper.auto_migrate!
+#DataMapper.auto_migrate!
 def taglist
   Hashtag.all.map(&:name).reverse.map { |n| "<li>#{n}</li>" }.join
 end
