@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
-gem "datamapper"
+gem "data_mapper"
 gem "httpclient"
 gem "sinatra"
+gem "unicorn"
 
 group :production do
   gem 'dm-postgres-adapter'
