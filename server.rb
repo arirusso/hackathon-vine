@@ -50,7 +50,8 @@ def video_query(query)
 end
 
 def redirected_url(url)
-  return "https://vine.co/v/bxhYjjTXW7v" # placeholder
+  #"https://vine.co/v/bxhYjjTXW7v" # placeholder
+  url = "https://#{url}" unless url =~ /^http/
   uri = URI.parse(url)
   http = Net::HTTP.new(uri.host, uri.port)
   request = Net::HTTP::Get.new(uri.request_uri)
@@ -59,8 +60,6 @@ def redirected_url(url)
   url = response.code == "301" ? response["location"] : nil
   url if url.match(/vine\.co/)
 end
-
-p redirected_url("t.co/rqwfRi4q8r")
 
 def video_url_from(url)
   "https://vines.s3.amazonaws.com/videos/2013/04/27/4D7D48D6-257F-40B1-9E7D-996AEAC39A3C-3644-00000332370EC914_1.0.7.mp4?versionId=0sdbPSuCYORPfdjaSaUdU7rECF2K9wfE" # placeholder
