@@ -9,12 +9,12 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/developm
 class Hashtag
   include DataMapper::Resource
   property :id,        Serial  
-  property :url,  String, :required => true
+  property :url,  Text
   property :name,         String, :required => true
   property :submitted_at, DateTime
 end
 DataMapper.finalize
-#DataMapper.auto_migrate!
+DataMapper.auto_migrate!
 def taglist
   Hashtag.all.map(&:name).reverse.map { |n| "<li>#{n}</li>" }.join
 end
@@ -94,8 +94,9 @@ end
 
 post "/" do
   tag = params[:hashtag]
-  if !(url = latest_valid_url(tag)).nil?
-    Hashtag.create(:name => tag, :url => url, :submitted_at => Time.now).save
+  url = latest_valid_url(tag)
+  unless url.nil?
+    Hashtag.new(:name => tag, :url => url, :submitted_at => Time.now).save
   end
   redirect "/"
 end
