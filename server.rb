@@ -115,5 +115,5 @@ get "/video" do
 end
 
 get "/player" do
-  File.read(File.join('', 'player.html'))
+  File.read(File.join('.', 'player.html'))
 end
