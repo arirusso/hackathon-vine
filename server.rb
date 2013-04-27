@@ -50,7 +50,7 @@ def video_query(query)
 end
 
 def redirected_url(url)
-  #"https://vine.co/v/bxhYjjTXW7v" # placeholder
+  return "https://vine.co/v/bxhYjjTXW7v" # placeholder
   uri = URI.parse(url)
   http = Net::HTTP.new(uri.host, uri.port)
   request = Net::HTTP::Get.new(uri.request_uri)
