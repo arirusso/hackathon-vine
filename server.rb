@@ -18,9 +18,6 @@ DataMapper.finalize
 
 #Hashtag.auto_migrate!
 
-#@connection = HTTPClient.new
-#@connection.set_cookie_store('/tmp/cookie.dat')
-
 def form
   hashtags = Hashtag.all.map(&:name).map { |n| "<li>#{n}</li>" }.join
   '<form name="input" action="/" method="post">
@@ -34,12 +31,25 @@ def form
   '</ul>'
 end
 
-#def vidurl
-#  h = Hashtag.last
-#  q = URI.escape(h.name)
-#  #  Connection.instance.post("http://vineviewer.co/actions/search.php?q=blah%2Fv%2F+&rpp=100&page=1", params)
-#  
-#end
+def video_url(query)
+  q = URI.escape(query)
+  "http://vineviewer.co/actions/search.php?q=#{q}%2Fv%2F+&rpp=1&page=1"
+end
+
+def video_query(query)
+  url = video_url(query)
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  request = Net::HTTP::Get.new(uri.request_uri)
+  response = http.request(request)
+  if !response.nil? && !response.code.nil? && response.code == "200" && !response.body.nil?
+    data = JSON.parse(response.body)
+    data if !data["results"].nil?
+  end
+end
+
+#p video_query(Hashtag.last.name)
+#p video_query("plants")
 
 get '/' do
   form
