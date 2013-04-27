@@ -1,5 +1,6 @@
 require "data_mapper"
 require "json"
+require "net/http"
 require "sinatra"
 require "uri"
 
