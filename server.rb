@@ -50,7 +50,14 @@ def video_query(query)
 end
 
 def redirected_url(url)
-  "https://vine.co/v/bxhYjjTXW7v" # placeholder
+  #"https://vine.co/v/bxhYjjTXW7v" # placeholder
+  uri = URI.parse(url)
+  http = Net::HTTP.new(uri.host, uri.port)
+  request = Net::HTTP::Get.new(uri.request_uri)
+  http.use_ssl = true if uri.port == 443
+  response = http.request(request)
+  response.code == "301" ? response["location"] : nil
+
 end
 
 def video_url_from(url)
