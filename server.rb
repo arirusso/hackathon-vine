@@ -4,8 +4,6 @@ require "net/http"
 require "sinatra"
 require "uri"
 
-#set :port, 8000
-
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
 class Hashtag
@@ -82,18 +80,17 @@ def find_good_video
   find_good_query(queries) 
 end
 
-get '/' do
+get "/" do
   form
 end
 
-post '/' do
+post "/" do
   Hashtag.create(:name => params[:hashtag], :submitted_at => Time.now).save
-  form
+  redirect "/"
 end
 
-get '/video' do  
+get "/video" do  
   video = find_good_video
   content_type :json
   { :query => video[:name], :url => video[:url] }.to_json
 end
-
