@@ -34,7 +34,7 @@ end
 
 def video_url(query)
   q = URI.escape(query)
-  "http://vineviewer.co/actions/search.php?q=#{q}%2Fv%2F+&rpp=1&page=1"
+  "http://vineviewer.co/actions/search.php?q=#{q}%2Fv%2F+&rpp=100&page=1"
 end
 
 def video_query(query)
@@ -49,12 +49,22 @@ def video_query(query)
   end
 end
 
-def url_from(result)
+def url_from_result(result)
   text = result["text"]
+  url = text.split(/\ /).last
+  url if url.match(/https?:\/\/[\S]+/)
+end
+
+def url_from_results(results)
+  results.each do |r| 
+    url = url_from_result(r)
+    return url unless url.nil?
+  end
 end
 
 #p video_query(Hashtag.last.name)
-p url_from(video_query("plants").first)
+p results = video_query("plants")
+p url_from_results(results)
 
 get '/' do
   form
