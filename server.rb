@@ -48,8 +48,12 @@ def video_query(query)
   end
 end
 
+def url_from(result)
+  text = result["text"]
+end
+
 #p video_query(Hashtag.last.name)
-p video_query("plants").first
+p url_from(video_query("plants").first)
 
 get '/' do
   form
@@ -60,9 +64,8 @@ post '/' do
   form
 end
 
-#post '/video' do
-#  vidurl
-#  content_type :json
-#  { :key1 => 'value1', :key2 => 'value2' }.to_json
-#end
+get '/video' do
+  content_type :json
+  { :url => 'https://vine.co/v/bxhYjjTXW7v' }.to_json
+end
 
