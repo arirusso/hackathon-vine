@@ -2,7 +2,7 @@ require "data_mapper"
 require "json"
 require "sinatra"
 
-set :port, 8000
+#set :port, 8000
 
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
