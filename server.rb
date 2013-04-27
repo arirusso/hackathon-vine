@@ -16,7 +16,7 @@ class Hashtag
 end
 DataMapper.finalize
 
-#Hashtag.auto_migrate!
+Hashtag.auto_migrate!
 
 def form
   hashtags = Hashtag.all.map(&:name).map { |n| "<li>#{n}</li>" }.join
