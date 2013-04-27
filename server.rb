@@ -105,18 +105,17 @@ end
 
 post "/" do
   tag = params[:hashtag]
-  url = latest_valid_url(tag)
   unless url.nil?
-    Hashtag.new(:name => tag, :url => url, :submitted_at => Time.now).save
+    Hashtag.new(:name => tag, :submitted_at => Time.now).save
   end
   redirect "/"
 end
 
-get "/video" do  
-  video = find_good_video
-  content_type :json
-  video.nil? ? {} : { :query => video[:name], :url => video[:url] }.to_json
-end
+#get "/video" do  
+#  video = find_good_video
+#  content_type :json
+#  video.nil? ? {} : { :query => video[:name], :url => video[:url] }.to_json
+#end
 
 get "/player" do
   File.read(File.join('.', 'player.html'))
