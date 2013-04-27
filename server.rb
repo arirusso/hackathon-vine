@@ -39,7 +39,7 @@ end
 
 def video_query(query)
   url = video_url(query)
-  uri = URI.parse(url)
+  uri = URI.parse(url) 
   http = Net::HTTP.new(uri.host, uri.port)
   request = Net::HTTP::Get.new(uri.request_uri)
   response = http.request(request)
@@ -47,6 +47,8 @@ def video_query(query)
     data = JSON.parse(response.body)
     data["results"] if !data["results"].nil?
   end
+rescue
+  nil
 end
 
 def redirected_url(url)
@@ -58,6 +60,8 @@ def redirected_url(url)
   http.use_ssl = true if uri.port == 443
   response = http.request(request)
   response.code == "301" && response["location"].match(/vine\.co/) ? response["location"] : nil
+rescue
+  nil
 end
 
 def video_url_from(url)
