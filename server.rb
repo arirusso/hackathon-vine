@@ -52,7 +52,7 @@ end
 def url_from_result(result)
   text = result["text"]
   url = text.split(/\ /).last
-  url if url.match(/https?:\/\/[\S]+/)
+  url.match(/https?:\/\/[\S]+/) ? url : nil
 end
 
 def url_from_results(results)
@@ -68,7 +68,19 @@ def latest_valid_url(hashtag)
   url_from_results(results)
 end
 
-p latest_valid_url("blah")
+def find_good_query(queries)
+  queries.each do |query|
+    url = latest_valid_url(query)
+    return { :name => query, :url => url } unless url.nil?
+  end
+  nil
+end
+
+def find_good_video
+  hashtags = Hashtag.all
+  queries = hashtags.reverse.map(&:name)
+  find_good_query(queries) 
+end
 
 get '/' do
   form
@@ -79,8 +91,9 @@ post '/' do
   form
 end
 
-get '/video' do
+get '/video' do  
+  video = find_good_video
   content_type :json
-  { :query => "blah", :url => 'https://vine.co/v/bxhYjjTXW7v' }.to_json
+  { :query => video[:name], :url => video[:url] }.to_json
 end
 
