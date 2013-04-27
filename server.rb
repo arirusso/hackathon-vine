@@ -9,11 +9,12 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/developm
 class Hashtag
   include DataMapper::Resource
   property :id,        Serial  
+  property :url,  String, :required => true
   property :name,         String, :required => true
   property :submitted_at, DateTime
 end
 DataMapper.finalize
-
+#DataMapper.auto_migrate!
 def taglist
   Hashtag.all.map(&:name).reverse.map { |n| "<li>#{n}</li>" }.join
 end
@@ -48,10 +49,24 @@ def video_query(query)
   end
 end
 
+def redirected_url(url)
+  "https://vine.co/v/bxhYjjTXW7v" # placeholder
+end
+
+def video_url_from(url)
+  "https://vines.s3.amazonaws.com/videos/2013/04/27/4D7D48D6-257F-40B1-9E7D-996AEAC39A3C-3644-00000332370EC914_1.0.7.mp4?versionId=0sdbPSuCYORPfdjaSaUdU7rECF2K9wfE" # placeholder
+end
+
 def url_from_result(result)
   text = result["text"]
   url = text.split(/\ /).last
-  url.match(/https?:\/\/[\S]+/) ? url : nil
+  if url.match(/https?:\/\/[\S]+/)
+    redirected_url = redirected_url(url)
+    unless redirected_url.nil?
+      video_url = video_url_from(redirected_url)
+      video_url unless video_url.nil?
+    end
+  end
 end
 
 def url_from_results(results)
@@ -67,18 +82,8 @@ def latest_valid_url(hashtag)
   url_from_results(results)
 end
 
-def find_good_query(queries)
-  queries.each do |query|
-    url = latest_valid_url(query)
-    return { :name => query, :url => url } unless url.nil?
-  end
-  nil
-end
-
 def find_good_video
-  hashtags = Hashtag.all
-  queries = hashtags.reverse.map(&:name)
-  find_good_query(queries) 
+  tags = Hashtag.last
 end
 
 ##################### API
@@ -88,12 +93,15 @@ get "/" do
 end
 
 post "/" do
-  Hashtag.create(:name => params[:hashtag], :submitted_at => Time.now).save
+  tag = params[:hashtag]
+  if !(url = latest_valid_url(tag)).nil?
+    Hashtag.create(:name => tag, :url => url, :submitted_at => Time.now).save
+  end
   redirect "/"
 end
 
 get "/video" do  
   video = find_good_video
   content_type :json
-  { :query => video[:name], :url => video[:url] }.to_json
+  video.nil? ? {} : { :query => video[:name], :url => video[:url] }.to_json
 end
