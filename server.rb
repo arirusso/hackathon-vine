@@ -21,7 +21,8 @@ Hashtag.auto_migrate!
 def form
   hashtags = Hashtag.all.map(&:name).map { |n| "<li>#{n}</li>" }.join
   '<form name="input" action="/" method="post">
-   <h1>Music Hackathon</h1>
+   <h1>Music Hackathon @ Jazz & Technology Forum</h1>
+   <h2>April 27, 2013</h2>
    <h3>Enter a hashtag</h3> <br /><input type="text" name="hashtag">
    <input type="submit" value="Submit">
    </form>
