@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>looooooper 2</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<style>
+	html, body {
+		height: 100%;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		text-align: center;
+		background: black;
+	}
+	
+	#container {
+		height: 810px;
+		width: 810px;
+		margin: 50px auto 0;
+		padding: 0;
+		position: relative;
+	}
+	
+	video {
+		height: 810px;
+		width: 810px;
+		margin: 0;
+		position: absolute;
+		top: 0;
+		right: 0;
+		padding: 0;
+		z-index: 1;
+	}
+
+	div#grid {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 810px;
+		width: 810px;
+		margin: 0 auto;v
+		padding: 0;
+		z-index: 2;
+	}	
+	
+	div#grid table {
+			border-collapse: seperate;
+			border-spacing: 0;
+			height: 810px;
+			width: 810px;
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+	div#grid td {
+			border: 16px solid;
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			width: 270px;
+			height: 270px;
+			position: relative;
+		}
+	
+	div#grid td span {
+		position: absolute;
+		color: #111;
+		bottom: 5px;
+		right: 10px;
+		font-size: 40px;
+		font-weight: bold;
+		font-family: "helvetica neue";		
+		line-height: 1;
+		margin: 0;
+		padding: 0;
+	}
+
+#tag {
+	color: red;
+	z-index: 3;
+}
+
+</style>
+
+</head>
+<body>
+
+
+   <script type="text/javascript" language="javascript">
+   $(document).ready(function() {
+      $("#driver").click(function(event){
+          $.getJSON('/jquery/result.json', function(jd) {
+             $('#stage').html('<p> Name: ' + jd.name + '</p>');
+             $('#stage').append('<p>Age : ' + jd.age+ '</p>');
+             $('#stage').append('<p> Sex: ' + jd.sex+ '</p>');
+          });
+      });
+   });
+   </script>
+
+
+<script type="text/javascript" language="javascript">
+	$.getJSON('//ace-hack.herokuapp.com/video', function(bojangles) {
+		 $('#porkpie source').attr('src', bojangles.url);
+		 $('#tag').html(bojangles.query);
+	});
+
+function onTrackedVideoFrame(currentTime, duration){
+	//	var duration = #porkpie.duration
+		 $('#test').text(video.currentTime);
+}
+
+$(function(){
+	$('#test1').text('#porkpie'.currentTime);
+	$('#test2').text('#porkpie'.duration);
+})
+
+
+</script>
+
+
+<div id="container">
+<div id="tag"></div>
+<div id="test1"></div>
+<div id="test2"></div>
+
+<div id="grid">
+	<table>
+		<tr>
+			<td style="border-color: #999;"><span>1</span></td>
+			<td style="border-color: #333;"><span>2</span></td>
+			<td style="border-color: #999;"><span>3</span></td>
+		</tr>
+		<tr>
+			<td style="border-color: #333;"><span>4</span></td>
+			<td style="border-color: #999;"><span>5</span></td>
+			<td style="border-color: #333;"><span>6</span></td>
+		</tr>
+		<tr>
+			<td style="border-color: #999;"><span>7</span></td>
+			<td style="border-color: #333;"><span>8</span></td>
+			<td style="border-color: #999;"><span>9</span></td>
+		</tr>
+	</table>
+</div>
+
+<video id="porkpie" width="480" height="480" autoplay="autoplay" loop="true" muted="muted">
+  <source src="" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+
+
+</div>
+
+</body>
+</html>
