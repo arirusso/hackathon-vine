@@ -14,10 +14,11 @@ class Hashtag
 end
 DataMapper.finalize
 
-#Hashtag.auto_migrate!
+def taglist
+  Hashtag.all.map(&:name).reverse.map { |n| "<li>#{n}</li>" }.join
+end
 
 def form
-  hashtags = Hashtag.all.map(&:name).map { |n| "<li>#{n}</li>" }.join
   '<form name="input" action="/" method="post">
    <h1>Music Hackathon @ Jazz & Technology Forum</h1>
    <h2>April 27, 2013</h2>
@@ -26,7 +27,7 @@ def form
    </form>
    <h4>Hashtags so far:</h4>
    <ul>
-  ' + hashtags +
+  ' + taglist +
   '</ul>'
 end
 
@@ -79,6 +80,8 @@ def find_good_video
   queries = hashtags.reverse.map(&:name)
   find_good_query(queries) 
 end
+
+##################### API
 
 get "/" do
   form
