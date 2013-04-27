@@ -44,12 +44,12 @@ def video_query(query)
   response = http.request(request)
   if !response.nil? && !response.code.nil? && response.code == "200" && !response.body.nil?
     data = JSON.parse(response.body)
-    data if !data["results"].nil?
+    data["results"] if !data["results"].nil?
   end
 end
 
 #p video_query(Hashtag.last.name)
-#p video_query("plants")
+p video_query("plants").first
 
 get '/' do
   form
