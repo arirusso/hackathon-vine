@@ -57,8 +57,7 @@ def redirected_url(url)
   request = Net::HTTP::Get.new(uri.request_uri)
   http.use_ssl = true if uri.port == 443
   response = http.request(request)
-  url = response.code == "301" ? response["location"] : nil
-  url if url.match(/vine\.co/)
+  response.code == "301" && response["location"].match(/vine\.co/) ? response["location"] : nil
 end
 
 def video_url_from(url)

@@ -3,6 +3,7 @@ gem "data_mapper"
 gem "httpclient"
 gem "sinatra"
 gem "unicorn"
+gem "nokogiri"
 
 group :production do
   gem 'dm-postgres-adapter'

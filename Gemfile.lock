@@ -62,6 +62,7 @@ GEM
     json_pure (1.7.7)
     kgio (2.8.0)
     multi_json (1.7.2)
+    nokogiri (1.5.0)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -86,5 +87,6 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   httpclient
+  nokogiri
   sinatra
   unicorn
